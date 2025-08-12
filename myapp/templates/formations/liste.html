@@ -1,0 +1,10 @@
+<h2>Liste des formations</h2>
+<ul>
+  {% for formation in formations %}
+    <li>
+      <a href="{% url 'detail_formation' formation.id %}">
+        Formation #{{ formation.id }} - Créée le {{ formation.date_creation }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>

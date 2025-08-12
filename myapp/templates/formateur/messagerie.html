@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Messagerie - Apprenants</h2>
+    <ul>
+        {% for apprenant in apprenants %}
+            <li>
+                <a href="{% url 'conversation' apprenant.id %}">
+                    {{ apprenant.get_full_name|default:apprenant.username }}
+                </a>
+            </li>
+        {% empty %}
+            <li>Aucune conversation pour le moment.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %} 

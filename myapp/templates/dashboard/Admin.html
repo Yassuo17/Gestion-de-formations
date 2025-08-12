@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Administrateur</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3a0ca3;
+      --primary-light: #7209b7;
+      --accent: #4895ef;
+      --bg: #f8f9fa;
+      --white: #fff;
+      --text: #2b2d42;
+      --text-light: #8d99ae;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--primary);
+    }
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .user-table th, .user-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+    }
+    .user-table th {
+      background-color: #dee2ff;
+      color: var(--text);
+    }
+    .user-table td {
+      background: var(--white);
+    }
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .btn-edit {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-delete {
+      background: #e63946;
+      color: white;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+    .add-user {
+      display: inline-block;
+      margin-bottom: 1rem;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+    .add-user:hover {
+      background-color: var(--primary-light);
+    }
+  </style>
+</head>
+<body>
+  <h1>Gestion des Utilisateurs</h1>
+
+  <a href="{% url 'ajouter_utilisateur' %}" class="add-user">
+    <i class="fas fa-user-plus"></i> Ajouter un utilisateur
+  </a>
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Rôle</th>
+        <th>Date de création</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in utilisateurs %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.nom }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.date_joined|date:"d/m/Y" }}</td>
+        <td>
+          <div class="actions">
+            <a href="{% url 'modifier_utilisateur' user.id %}" class="btn btn-edit">
+              <i class="fas fa-edit"></i>
+            </a>
+            <a href="{% url 'supprimer_utilisateur' user.id %}" class="btn btn-delete" onclick="return confirm('Confirmer la suppression ?');">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center; color: var(--text-light);">Aucun utilisateur trouvé.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

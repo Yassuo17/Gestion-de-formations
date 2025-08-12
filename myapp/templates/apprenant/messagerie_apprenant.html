@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ma Messagerie</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .msg { background: #f9f9f9; border:1px solid #ddd; padding:15px; margin-bottom:10px; border-radius:8px; }
+    .sujet { font-weight:600; color:#1565c0; }
+    .date  { font-size:0.85rem; color:#777; }
+    .corps { margin-top:8px; }
+  </style>
+</head>
+<body>
+  <h1>📥 Mes messages</h1>
+  {% if messages %}
+    {% for m in messages %}
+      <div class="msg">
+        <div class="sujet">{{ m.sujet }}</div>
+        <div class="date">Envoyé le {{ m.date_envoi|date:"d/m/Y H:i" }} par {{ m.expediteur.get_full_name }}</div>
+        <div class="corps">{{ m.corps }}</div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Vous n’avez aucun message.</p>
+  {% endif %}
+</body>
+</html>

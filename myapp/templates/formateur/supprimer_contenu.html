@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Supprimer le Contenu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #d63031;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 30px;
+            color: #2d3436;
+        }
+
+        button, a {
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .confirm-btn {
+            background-color: #d63031;
+            color: white;
+            border: none;
+        }
+
+        .cancel-btn {
+            background-color: #b2bec3;
+            color: white;
+        }
+
+        .confirm-btn:hover {
+            background-color: #e17055;
+        }
+
+        .cancel-btn:hover {
+            background-color: #dfe6e9;
+            color: #2d3436;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Confirmer la suppression</h1>
+        <p>Voulez-vous vraiment supprimer le contenu : <strong>{{ contenu.titre }}</strong> ?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="confirm-btn">Oui, supprimer</button>
+            <a href="{% url 'voir_contenus' contenu.formation.id %}" class="cancel-btn">Annuler</a>
+        </form>
+    </div>
+</body>
+</html>

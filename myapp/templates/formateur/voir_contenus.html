@@ -1,0 +1,353 @@
+{% load dict_utils %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contenus de {{ formation.titre }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%,rgb(44, 105, 218) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg,rgb(71, 100, 230) 0%,rgb(45, 91, 218) 100%);
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .content-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .content-body {
+            padding: 40px;
+        }
+
+        .content-list {
+            list-style: none;
+        }
+
+        .content-item {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f3f4ff 100%);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg,rgb(57, 107, 214) 0%,rgb(50, 95, 218) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .content-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.15);
+        }
+
+        .content-item:hover::before {
+            width: 6px;
+        }
+
+        .content-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-title::before {
+            content: '📚';
+            font-size: 1.1rem;
+        }
+
+        .content-description {
+            color: #636e72;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .file-link {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+
+        .file-link:hover {
+            background: linear-gradient(135deg, #00a085 0%, #008f73 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
+        }
+
+        .quiz-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .quiz-link:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #636e72;
+        }
+
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 40px;
+            animation: fadeIn 0.8s ease 0.4s both;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.95);
+            color: #4facfe;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255,255,255,0.3);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover::before {
+            transform: translateX(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-body {
+                padding: 25px;
+            }
+
+            .content-item {
+                padding: 20px;
+            }
+
+            .content-actions {
+                flex-direction: column;
+            }
+
+            .action-link {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Formation</h1>
+            <div class="subtitle">Contenus et ressources pédagogiques</div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="content-header">
+                <h2>{{ formation.titre }}</h2>
+            </div>
+
+            <div class="content-body">
+                {% if contenus_et_quiz %}
+                    <ul class="content-list">
+                        {% for contenu, quiz in contenus_et_quiz %}
+                            <li class="content-item">
+                                <div class="content-title">{{ contenu.titre }}</div>
+                                <div class="content-description">{{ contenu.description }}</div>
+                                
+                                <div class="content-actions">
+                                    {% if contenu.fichier %}
+                                        <a href="{{ contenu.fichier.url }}" target="_blank" class="action-link file-link">
+                                            <span>📎</span>
+                                            Télécharger le fichier
+                                        </a>
+                                    {% endif %}
+                                    {% if quiz %}
+                                        <a href="{% url 'voir_quiz' quiz.id %}" class="action-link quiz-link">
+                                            <span>🎯</span>
+                                            Accéder au quiz
+                                        </a>
+                                    {% else %}
+                                        <!-- Debug: Quiz non trouvé pour ce contenu -->
+                                        <span style="font-size: 0.8em; color: #999; font-style: italic;">Aucun quiz associé</span>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="icon">📚</div>
+                        <h3>Aucun contenu disponible</h3>
+                        <p>Aucun contenu n'a encore été ajouté à cette formation.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="{% url 'gerer_formations' %}" class="back-button">
+                Retour à mes formations
+            </a>
+        </div>
+    </div>
+</body>
+</html>

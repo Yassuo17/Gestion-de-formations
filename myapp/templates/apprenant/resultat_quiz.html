@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultat du Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background:rgb(38, 96, 204);
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(38, 150, 241, 0.66);
+            text-align: center;
+        }
+        h1 {
+            color: #2d3436;
+        }
+        .score {
+            font-size: 2em;
+            color: #00b894;
+            margin: 20px 0;
+        }
+        .status {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #636e72;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Résultat du Quiz</h1>
+        <div class="score">Note : {{ note }}/5</div>
+        <div class="status">{{ status }}</div>
+        <a href="{% url 'dashboard_apprenant' %}">← Retour au tableau de bord</a>
+    </div>
+</body>
+</html> 

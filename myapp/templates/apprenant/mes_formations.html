@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mes Formations</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #1e40af;
+      --secondary: #1d4ed8;
+      --accent: #00b894;
+      --bg-gradient: linear-gradient(135deg,rgb(41, 108, 233) 0%,rgb(25, 103, 228) 100%);
+      --white:rgb(243, 243, 245);
+      --glass: rgba(255, 255, 255, 0.95);
+      --text-dark: #2d3436;
+      --text-light: #636e72;
+      --text-muted: #95a5a6;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 25px 80px rgba(0, 0, 0, 0.15);
+      --radius: 20px;
+      --radius-small: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Navigation moderne */
+    header {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(3, 26, 158, 0.58);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: slideDown 0.6s ease;
+    }
+
+    .navbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .logo i {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-small);
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(63, 96, 240, 0.8), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: linear-gradient(135degree,rgb(19, 110, 201) 0%,rgb(27, 66, 173) 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(16, 66, 233, 0.4);
+    }
+
+    .page-title {
+      text-align: center;
+      padding: 2rem 0;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    .page-title h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .page-title .subtitle {
+      color: rgba(227, 229, 236, 0.9);
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+
+    /* Container principal */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Grille des formations */
+    .formation-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .formation-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .formation-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--bg-gradient);
+    }
+
+    .formation-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .formation-card h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .formation-card h3::before {
+      content: '📚';
+      font-size: 1.2rem;
+    }
+
+    .formation-card .meta {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .formation-card .meta::before {
+      content: '📅';
+      font-size: 0.9rem;
+    }
+
+    /* Barre de progression moderne */
+    .progress-section {
+      margin: 1.5rem 0;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .progress-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .progress-percentage {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .progress-container {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 50px;
+      height: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--bg-gradient);
+      border-radius: 50px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Bouton d'action moderne */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: var(--bg-gradient);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      margin-top: auto;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(30, 58, 138, 0.4);
+    }
+
+    .btn::after {
+      content: '→';
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover::after {
+      transform: translateX(5px);
+    }
+
+    /* État vide */
+    .empty-state {
+      text-align: center;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius);
+      padding: 4rem 2rem;
+      box-shadow: var(--shadow);
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .empty-state .icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+
+    .empty-state h3 {
+      font-size: 1.5rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+
+    /* Lien de retour */
+    .back-link {
+      text-align: center;
+      margin-top: 3rem;
+      animation: fadeIn 0.8s ease 0.6s both;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      color: var(--primary);
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: var(--transition);
+    }
+
+    .back-button:hover {
+      background: white;
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+    }
+
+    .back-button::before {
+      content: '←';
+      transition: transform 0.3s ease;
+    }
+
+    .back-button:hover::before {
+      transform: translateX(-3px);
+    }
+
+    /* Animations */
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-menu {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .page-title h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .formation-list {
+        grid-template-columns: 1fr;
+      }
+
+      .formation-card {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-link span {
+        display: none;
+      }
+      
+      .nav-link {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header> 
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-graduation-cap">🎓</i>
+        <span>EduDash</span>
+      </div>
+      <nav class="nav-menu">
+        <a href="{% url 'dashboard_apprenant' %}" class="nav-link">
+          <i class="fas fa-home">🏠</i>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="{% url 'ajouter_commentaire' %}" class="nav-link">
+          <i class="fas fa-book">💬</i>
+          <span>Commentaires</span>
+        </a>
+        <a href="{% url 'mes_formations' %}" class="nav-link active">
+          <i class="fas fa-users">📚</i>
+          <span>Mes formations</span>
+        </a>
+        <a href="{% url 'formations_disponibles'%}" class="nav-link">
+          <i class="fas fa-comments">🔍</i>
+          <span>Formations disponibles</span>
+        </a>
+      </nav>
+    </nav>
+  </header>
+
+  <div class="page-title">
+    <h1>📘 Mes Formations</h1>
+    <p class="subtitle">Suivez votre progression et accédez à vos contenus</p>
+  </div>
+
+  <div class="container">
+    {% if inscriptions %}
+      <div class="formation-list">
+        {% for inscription in inscriptions %}
+          <div class="formation-card">
+            <h3>{{ inscription.formation.titre }}</h3>
+            <p class="meta">{{ inscription.formation.date_creation|date:"d F Y" }}</p>
+            
+            <div class="progress-section">
+              <div class="progress-header">
+                <span class="progress-label">Progression</span>
+                <span class="progress-percentage">{{ inscription.progression }}%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: {{ inscription.progression }}%;"></div>
+              </div>
+            </div>
+
+            <a href="{% url 'contenus_apprenant' inscription.formation.id %}" class="btn">
+              Voir les contenus
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="icon">📚</div>
+        <h3>Aucune formation</h3>
+        <p>Vous n'êtes inscrit à aucune formation pour le moment.</p>
+      </div>
+    {% endif %}
+
+    <div class="back-link">
+      <a href="{% url 'dashboard_apprenant' %}" class="back-button">
+        Retour au menu principal
+      </a>
+    </div>
+  </div>
+</body>
+</html>

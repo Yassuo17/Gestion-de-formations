@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accueil - Plateforme de Formation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #3a0ca3;
+      --secondary-dark: #310b93;
+      --accent: #4cc9f0;
+      --white: #fff;
+      --bg-gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
+      --text-white: #f8f9fa;
+      --text-dark: #2b2d42;
+      --text-muted: #9499a8;
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      --radius-sm: 8px;
+      --radius: 16px;
+      --radius-lg: 24px;
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Particles background effect */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      animation: float 20s infinite;
+      opacity: 0.4;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-60vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    header {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-icon {
+      font-size: 2.5rem;
+      color: var(--accent);
+      filter: drop-shadow(0 0 8px rgba(76, 201, 240, 0.3));
+    }
+
+    .logo-text {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--white);
+      margin: 0 0 1rem;
+      line-height: 1.2;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    header p {
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      background-color: var(--bg-card);
+      padding: 3rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      max-width: 580px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(0);
+      transition: var(--transition);
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .container h2 {
+      color: var(--text-dark);
+      margin-bottom: 1.75rem;
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .roles {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .role-btn {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.25rem 1.75rem;
+      background-color: var(--white);
+      color: var(--text-dark);
+      text-decoration: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 1.125rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .role-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      background-color: rgba(67, 97, 238, 0.1);
+      transition: width 0.3s ease;
+      z-index: 0;
+    }
+
+    .role-btn:hover::before {
+      width: 100%;
+    }
+
+    .role-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .role-btn.primary {
+      border-left: 5px solid var(--primary);
+    }
+
+    .role-btn.secondary {
+      border-left: 5px solid var(--accent);
+    }
+
+    .role-btn.admin {
+      border-left: 5px solid var(--secondary);
+    }
+
+    .role-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      color: var(--primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .role-btn.secondary .role-icon {
+      color: var(--accent);
+    }
+
+    .role-btn.admin .role-icon {
+      color: var(--secondary);
+    }
+
+    .role-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .role-btn .arrow {
+      margin-left: auto;
+      font-size: 1.25rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .role-btn:hover .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    footer {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--text-white);
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+
+    footer p {
+      opacity: 0.8;
+    }
+
+    /* Add responsive styles */
+    @media (max-width: 768px) {
+      header {
+        padding: 2rem 1rem;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 2rem;
+      }
+
+      .role-btn {
+        padding: 1rem 1.25rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.75rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      .container h2 {
+        font-size: 1.5rem;
+      }
+
+      .role-btn {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles">
+    <!-- Particles will be generated by JavaScript -->
+  </div>
+
+  <header>
+    <div class="logo">
+      <i class="fas fa-graduation-cap logo-icon"></i>
+      <span class="logo-text">EduConnect</span>
+    </div>
+    <h1>Bienvenue sur votre plateforme d'apprentissage en ligne</h1>
+    <p>Accédez à des formations de qualité et développez vos compétences professionnelles</p>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2>Connectez-vous selon votre rôle</h2>
+      <div class="roles">
+        <a href="{% url 'apprenant_login' %}" class="role-btn primary">
+          <i class="fas fa-user-graduate role-icon"></i>
+          <span class="role-text">Espace Apprenant</span>
+          <i class="fas fa-chevron-right arrow"></i>
+        </a>
+        <a href="{% url 'formateur_login' %}" class="role-btn secondary">
+          <i class="fas fa-chalkboard-teacher role-icon"></i>
+          <span class="role-text">Espace Formateur</span>
+          <i class="fas fa-chevron-right arrow"></i>
+        </a>
+        <a href="/admin/" class="role-btn admin">
+          <i class="fas fa-user-shield role-icon"></i>
+          <span class="role-text">Administration</span>
+          <i class="fas fa-chevron-right arrow"></i>
+        </a>
+      </div>
+    </div>
+  </main>
+ 
+  <footer>
+    <p>&copy; 2025 EduConnect. Tous droits réservés.</p>
+  </footer>
+
+  <script>
+    // Create animated particle background
+    document.addEventListener('DOMContentLoaded', function() {
+      const particlesContainer = document.querySelector('.particles');
+      const numberOfParticles = 15;
+      
+      for (let i = 0; i < numberOfParticles; i++) {
+        const size = Math.random() * 100 + 50;
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random styling
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.bottom = `${Math.random() * -10 - 10}vh`;
+        particle.style.animationDuration = `${Math.random() * 30 + 10}s`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    });
+  </script>
+</body>
+</html>

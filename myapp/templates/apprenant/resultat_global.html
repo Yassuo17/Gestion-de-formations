@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultat global des Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f1f2f6;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .echec {
+    color: #e74c3c; /* rouge vif */
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+        h1 {
+            color: #2d3436;
+        }
+        .score {
+            font-size: 2em;
+            color: #00b894;
+            margin: 20px 0;
+        }
+        .pourcentage {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .certificat {
+            margin-top: 30px;
+            padding: 20px;
+            background: #dff9fb;
+            border-radius: 10px;
+            color: #0984e3;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        a {
+            color: #636e72;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Résultat global des Quiz pour « {{ formation.titre }} »</h1>
+        <div class="score">Note totale : {{ note }}/{{ max_note }}</div>
+        <div class="pourcentage">Pourcentage : {{ pourcentage }}%</div>
+             {% if pourcentage >= 60 %}
+          <div class="certificat">
+              🎉 Félicitations ! Vous avez obtenu votre certificat.<br>
+              <a href="{% url 'telecharger_certificat' formation.id %}">📄 Télécharger mon certificat PDF</a>
+          </div>
+        {% else %}
+          <p class="echec">❌ Vous devez obtenir au moins 60% pour obtenir un certificat.</p>
+        {% endif %}
+
+
+        <p style="margin-top: 30px;">
+        <a href="{% url 'dashboard_apprenant' %}">← Retour au tableau de bord</a>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un contenu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0066CC;
+            --primary-light: #3399FF;
+            --primary-dark: #004080;
+            --secondary: #00BFFF;
+            --accent: #1E88E5;
+            --bg-primary: #0A1628;
+            --bg-secondary: #1A2332;
+            --white: #FFFFFF;
+            --gray-100: #F8FAFC;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E1;
+            --gray-600: #475569;
+            --gray-800: #1E293B;
+            --text-primary: #0F172A;
+            --text-secondary: #64748B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --gradient-primary: linear-gradient(135deg, #0066CC 0%,rgb(41, 105, 241) 100%);
+            --gradient-secondary: linear-gradient(135deg,rgb(49, 94, 219) 0%,rgb(19, 96, 211) 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* Animation de fond */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(0,102,204,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            max-width: 700px;
+            margin: 0 auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header avec gradient */
+        .header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .header h1 i {
+            font-size: 1.8rem;
+        }
+
+        .formation-title {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 12px;
+        }
+
+        /* Contenu du formulaire */
+        .form-content {
+            padding: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .section-title i {
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        label i {
+            color: var(--primary);
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .required {
+            color: var(--danger);
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--gray-100);
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        input[type="file"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Styling pour le file input */
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gradient-secondary);
+            color: white;
+            border: 2px dashed transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-height: 60px;
+        }
+
+        .file-input-button:hover {
+            background: linear-gradient(135deg, #0066CC 0%, #1E88E5 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .file-input-button i {
+            font-size: 1.2rem;
+        }
+
+        /* Boutons d'action */
+        .actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #004080 0%, #0066CC 100%);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--text-secondary);
+            border: 2px solid var(--gray-200);
+            padding: 18px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Indicateur de progression */
+        .progress-indicator {
+            background: var(--gray-100);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 24px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .progress-indicator h3 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-indicator p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Messages d'aide */
+        .help-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .help-text i {
+            color: var(--primary);
+        }
+
+        /* Animation pour les champs requis */
+        .form-group.required-field label::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--danger);
+            border-radius: 50%;
+            margin-left: 4px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .container {
+                margin: 0;
+            }
+
+            .header,
+            .form-content {
+                padding: 24px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                padding: 16px;
+            }
+        }
+
+        /* États de validation */
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .form-group.success input,
+        .form-group.success textarea,
+        .form-group.success select {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 13px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header avec gradient -->
+        <div class="header">
+            <div class="header-content">
+                <h1>
+                    <i class="fas fa-plus-circle"></i>
+                    Ajouter un contenu
+                </h1>
+                <div class="formation-title">
+                    Formation : « {{ formation.titre }} »
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenu du formulaire -->
+        <div class="form-content">
+            <!-- Indicateur de progression -->
+            <div class="progress-indicator">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    Enrichissez votre formation
+                </h3>
+                <p>Ajoutez du contenu riche pour améliorer l'expérience d'apprentissage de vos étudiants.</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Section informations de base -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-edit"></i>
+                        Informations du contenu
+                    </div>
+                    
+                    <div class="form-group required-field">
+                        <label for="id_titre">
+                            <i class="fas fa-heading"></i>
+                            Titre du contenu
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" name="titre" id="id_titre" required placeholder="Ex: Introduction aux concepts de base">
+                        <div class="help-text">
+                            <i class="fas fa-lightbulb"></i>
+                            Choisissez un titre clair et descriptif
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_description">
+                            <i class="fas fa-align-left"></i>
+                            Description
+                        </label>
+                        <textarea name="description" id="id_description" rows="4" placeholder="Décrivez le contenu et les objectifs d'apprentissage..."></textarea>
+                        <div class="help-text">
+                            <i class="fas fa-info-circle"></i>
+                            Expliquez ce que les apprenants vont découvrir
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section fichiers -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-file-upload"></i>
+                        Ressources et fichiers
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_fichier">
+                            <i class="fas fa-paperclip"></i>
+                            Fichier de contenu
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" name="fichier" id="id_fichier">
+                            <div class="file-input-button" onclick="document.getElementById('id_fichier').click();">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Cliquez pour sélectionner un fichier</span>
+                            </div>
+                        </div>
+                        <div class="help-text">
+                            <i class="fas fa-file-alt"></i>
+                            Formats supportés : PDF, DOC, PPT, MP4, etc.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_lien">
+                            <i class="fas fa-link"></i>
+                            Lien externe (optionnel)
+                        </label>
+                        <input type="text" name="lien" id="id_lien" placeholder="https://exemple.com/ressource">
+                        <div class="help-text">
+                            <i class="fas fa-external-link-alt"></i>
+                            Ajoutez un lien vers une ressource en ligne
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="actions">
+                    <a href="{% url 'voir_contenus' formation.id %}" class="btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Retour aux contenus
+                    </a>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Ajouter le contenu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Gestion du fichier upload
+        document.getElementById('id_fichier').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            const button = document.querySelector('.file-input-button span');
+            if (fileName) {
+                button.textContent = `Fichier sélectionné : ${fileName}`;
+                button.parentElement.style.background = 'var(--gradient-primary)';
+            } else {
+                button.textContent = 'Cliquez pour sélectionner un fichier';
+                button.parentElement.style.background = 'var(--gradient-secondary)';
+            }
+        });
+
+        // Animation au focus des champs
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            field.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+                if (this.value.trim()) {
+                    this.parentElement.classList.add('filled');
+                } else {
+                    this.parentElement.classList.remove('filled');
+                }
+            });
+        });
+
+        // Validation en temps réel
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const titre = document.getElementById('id_titre');
+            if (!titre.value.trim()) {
+                e.preventDefault();
+                titre.parentElement.classList.add('error');
+                if (!titre.parentElement.querySelector('.error-message')) {
+                    const errorMsg = document.createElement('div');
+                    errorMsg.className = 'error-message';
+                    errorMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ce champ est requis';
+                    titre.parentElement.appendChild(errorMsg);
+                }
+                titre.focus();
+            }
+        });
+    </script>
+</body>
+</html>

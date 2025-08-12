@@ -1,0 +1,356 @@
+{% load dict_utils %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Contenus - {{ formation.titre }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f8fbff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+
+        h1 {
+            color: #1565c0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #1565c0, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color:rgb(58, 77, 240);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .main-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 40px rgba(21, 101, 192, 0.1);
+            border: 1px solid rgba(66, 165, 245, 0.2);
+        }
+
+        .contenu-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 25px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(35, 91, 245, 0.91);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contenu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #42a5f5, #1565c0);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .contenu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(21, 101, 192, 0.15);
+            border-color: rgba(66, 165, 245, 0.3);
+        }
+
+        .contenu-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-wrapper {
+            margin-right: 20px;
+            margin-top: 5px;
+            position: relative;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #90caf9;
+            border-radius: 6px;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #42a5f5, #1565c0);
+            border-color: #1565c0;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .contenu-info {
+            flex: 1;
+        }
+
+        .contenu-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1565c0;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .contenu-description {
+            color:rgb(16, 94, 211);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .file-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #42a5f5;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            background: rgba(34, 97, 233, 0.91);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .file-link:hover {
+            background: rgba(66, 165, 245, 0.2);
+            transform: translateX(3px);
+        }
+
+        .quiz-section {
+            margin-top: 15px;
+        }
+
+        .quiz-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.3);
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(66, 165, 245, 0.4);
+            background: linear-gradient(135deg, #64b5f6, #1976d2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #42a5f5, #1565c0);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 18px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(21, 101, 192, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(21, 101, 192, 0.4);
+            background: linear-gradient(135deg, #64b5f6, #1976d2);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #546e7a;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #1565c0;
+            background: rgba(66, 165, 245, 0.1);
+            transform: translateX(-3px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #78909c;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .progress-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .contenu-item:has(input:checked) .progress-indicator {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .main-form {
+                padding: 25px;
+                border-radius: 16px;
+            }
+
+            .contenu-item {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .checkbox-wrapper {
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
+
+            .contenu-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Mes Contenus</h1>
+        <div class="subtitle">{{ formation.titre }}</div>
+    </div>
+
+    <form method="post" action="{% url 'progression_contenus' formation.id %}" class="main-form">
+        {% csrf_token %}
+
+        {% for contenu, quiz in contenus_et_quiz %}
+            {% with progression_map|dict_get:contenu.id as progression %}
+            <div class="contenu-item">
+                <div class="progress-indicator"></div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox"
+                           name="contenus_completes"
+                           value="{{ contenu.id }}"
+                           {% if progression and progression.est_complete %}checked{% endif %}>
+                </div>
+                <div class="contenu-info">
+                    <label class="contenu-title">{{ contenu.titre }}</label>
+                    <p class="contenu-description">{{ contenu.description }}</p>
+                    
+                    {% if contenu.fichier %}
+                        <a href="{{ contenu.fichier.url }}" target="_blank" class="file-link">
+                            📎 Voir le fichier
+                        </a>
+                    {% endif %}
+                    
+                    {% if quiz %}
+                        <div class="quiz-section">
+                            <a href="{% url 'passer_quiz' quiz.id %}" class="quiz-btn">
+                                🎯 Passer le quiz
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endwith %}
+        {% empty %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📚</div>
+                <p>Aucun contenu disponible pour cette formation.</p>
+            </div>
+        {% endfor %}
+
+        {% if contenus_et_quiz %}
+            <button type="submit" class="submit-btn">
+                ✨ Valider ma progression
+            </button>
+        {% endif %}
+    </form>
+
+    <div class="back-link">
+        <a href="{% url 'dashboard_apprenant' %}">
+            ← Retour au tableau de bord
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz : {{ quiz.question }}</title>
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg,rgb(167, 180, 238) 0%,rgb(188, 193, 238) 100%);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .quiz-icon {
+      font-size: 40px;
+    }
+    h1 {
+      background: linear-gradient(135deg, #667eea,rgb(72, 108, 209));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .feedback {
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+    }
+    .feedback.success {
+      background: linear-gradient(135deg,rgb(16, 89, 185),rgb(5, 68, 150));
+    }
+    .feedback.error {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+    form {
+      margin-top: 20px;
+    }
+    .choice-label {
+      display: block;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .choice-label:hover {
+      background: #eef2ff;
+      border-color: #667eea;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg,rgb(51, 81, 211),rgb(57, 69, 180));
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 20px;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #5a67d8,rgb(78, 70, 193));
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="quiz-header">
+      <div class="quiz-icon">🧠</div>
+      <h1>Quiz</h1>
+    </div>
+
+    {% if show_feedback %}
+      <div class="feedback {% if feedback_type == 'error' %}error{% else %}success{% endif %}">
+        {{ feedback }}
+      </div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      {% if show_feedback %}
+        {% if is_last %}
+          <button type="submit" name="next" class="btn">🎉 Voir les résultats</button>
+        {% else %}
+          <button type="submit" name="next" class="btn">➡️ Question suivante</button>
+        {% endif %}
+      {% else %}
+        <button type="submit" class="btn">✅ Soumettre</button>
+      {% endif %}
+    </form>
+  </div>
+</body>
+</html>

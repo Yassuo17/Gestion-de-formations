@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Apprenant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --text: #2b2d42;
+            --text-light: #8d99ae;
+            --bg-light: #f8f9fa;
+            --bg-card: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--bg-card);
+            box-shadow: var(--shadow-sm);
+            padding: 0.75rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .logout-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .welcome-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .welcome-section p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* Card Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .card-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: auto;
+            transition: var(--transition);
+        }
+
+        .card-link i {
+            margin-left: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .card-link:hover {
+            color: var(--secondary);
+        }
+
+        .card-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Comment Section */
+        .comment-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .comment-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .comment-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .comment-list {
+            margin-top: 2rem;
+        }
+
+        .comment-list h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .comment-list ul {
+            list-style: none;
+        }
+
+        .comment-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 0;
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            margin-right: 0.75rem;
+        }
+
+        .comment-date {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .comment-content {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.75rem 1rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .welcome-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comment-section {
+                padding: 1.5rem;
+            }
+        }
+         .nav-link {
+          
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius);
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-light);
+            color: var(--primary);
+        }
+        .messages-section {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      max-width: 800px;
+      margin: 3rem auto;
+    }
+    .messages-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+      position: relative;
+      padding-bottom: .5rem;
+    }
+    .messages-section h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 60px; height: 4px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .message-list {
+      list-style: none;
+      padding: 0;
+    }
+    .message-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .message-item:last-child { border-bottom: none; }
+    .msg-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: .9rem;
+      color: var(--text-light);
+      margin-bottom: .5rem;
+    }
+    .msg-subject {
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .msg-body {
+      font-size: .95rem;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>EduDash</span>
+        </div>
+         <nav class="nav-menu">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="{% url 'ajouter_commentaire' %}" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span> Commentaires </span>
+                </a>
+                <a href="{% url 'mes_formations' %}" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Consulter mes formations </span>
+                </a>
+                <a href="{% url 'formations_disponibles'%}" class="nav-link">
+                    <i class="fas fa-comments"></i>
+                    <span>Formations disponibles </span>
+                </a>
+            </nav>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Se déconnecter
+            </button>
+        </form>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Bienvenue sur votre espace apprenant</h1>
+            <p>Gérez vos formations et progressez dans votre parcours d'apprentissage</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>Formations disponibles</h3>
+                <p>Découvrez et inscrivez-vous aux formations qui correspondent à vos objectifs professionnels.</p>
+                <a href="{% url 'formations_disponibles' %}" class="card-link">
+                    S'inscrire à une formation 
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Mes Formations</h3>
+                <p>Consultez et poursuivez les formations auxquelles vous êtes inscrit.</p>
+                <a href="{% url 'mes_formations' %}" class="card-link">
+                    Voir mes formations
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Discussions</h3>
+                <p>Participez aux discussions avec les formateurs et les autres apprenants.</p>
+                <a href="#comment-section" class="card-link">
+                    Voir les commentaires
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="comment-section" id="comment-section">
+            <h2>Commentaires et discussions</h2>
+            <div class="comment-form">
+                <form method="post" action="{% url 'ajouter_commentaire' %}">
+                    {% csrf_token %}
+                    <textarea name="commentaire" rows="4" placeholder="Partagez votre avis ou posez une question..."></textarea>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Publier
+                    </button>
+                </form>
+            </div>
+            
+            <div class="comment-list">
+                <h3>Derniers commentaires</h3>
+                <ul>
+                    {% for c in commentaires %}
+                        <li class="comment-item">
+                            <div class="comment-header">
+                                <span class="comment-user">{{ c.utilisateur.username }}</span>
+                                <span class="comment-date">{{ c.date|date:'d/m/Y H:i' }}</span>
+                            </div>
+                            <div class="comment-content">
+                                {{ c.commentaire }}
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="comment-item">Aucun commentaire pour le moment.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+<div class="messages-section">
+  <h2>📨 Mes messages</h2>
+  {% if messages %}
+    <ul class="message-list">
+      {% for m in messages %}
+        <li class="message-item">
+          <div class="msg-header">
+            <span class="msg-subject">{{ m.sujet }}</span>
+            <span>{{ m.timestamp|date:"d/m/Y H:i" }}</span>
+          </div>
+          <div class="msg-body">
+            {{ m.content }}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun message pour le moment.</p>
+  {% endif %}
+</div>
+
+
+    <footer>
+        <p>&copy; 2025 GestionInfo. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

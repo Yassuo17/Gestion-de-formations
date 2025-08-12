@@ -1,0 +1,426 @@
+{# templates/admin/base_site.html #}
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}MonAdmin Pro | {{ title }}{% endblock %}
+
+{% block branding %}
+<div id="site-branding">
+  <h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+      <span class="admin-icon">⚡</span>
+      <span class="admin-title">MonAdmin</span>
+      <span class="admin-subtitle">Pro</span>
+    </a>
+  </h1>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    /* === IMPORTATION GOOGLE FONTS === */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* === VARIABLES CSS === */
+    :root {
+      --royal-blue:rgb(14, 70, 224);
+      --royal-blue-light: #3b82f6;
+      --royal-blue-dark:rgb(233, 236, 243);
+      --royal-blue-gradient: linear-gradient(135deg,rgb(54, 105, 245) 0%, #3b82f6 100%);
+      --accent-gold: #f59e0b;
+      --surface-primary: #ffffff;
+      --surface-secondary: #f8fafc;
+      --surface-tertiary: #e2e8f0;
+      --text-primary:rgb(221, 227, 236);
+      --text-secondary:rgb(226, 230, 236);
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --success-hover: #059669;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --border-radius: 8px;
+      --border-radius-lg: 12px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* === RESET ET BASE === */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      background: var(--surface-secondary) !important;
+      color: var(--text-primary) !important;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* === HEADER PRINCIPAL === */
+    #header {
+      background: var(--royal-blue-gradient) !important;
+      border: none !important;
+      box-shadow: var(--shadow-lg) !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      pointer-events: none;
+    }
+
+    /* === BRANDING === */
+    #site-branding {
+      position: relative;
+      z-index: 2;
+    }
+
+    #site-name {
+      margin: 0 !important;
+      padding: 1rem 1.5rem !important;
+    }
+
+    #site-name a {
+      color: white !important;
+      text-decoration: none !important;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600 !important;
+      font-size: 1.5rem !important;
+      transition: var(--transition);
+    }
+
+    #site-name a:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    .admin-icon {
+      font-size: 2rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.99));
+    }
+
+    .admin-title {
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .admin-subtitle {
+      background: var(--accent-gold);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* === USER TOOLS === */
+    #user-tools {
+      background: rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: var(--border-radius) !important;
+      margin: 0.5rem 1rem !important;
+      padding: 0.75rem 1rem !important;
+      position: relative;
+      z-index: 2;
+    }
+
+    #user-tools a {
+      color: white !important;
+      text-decoration: none !important;
+      font-weight: 500 !important;
+      transition: var(--transition);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    #user-tools a:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+      transform: translateY(-1px);
+    }
+
+    /* === CONTENEURS PRINCIPAUX === */
+    #container {
+      max-width: none !important;
+      padding: 2rem !important;
+    }
+
+    .module, .colM, .colMS {
+      background: var(--surface-primary) !important;
+      border: 1px solid var(--surface-tertiary) !important;
+      border-radius: var(--border-radius-lg) !important;
+      box-shadow: var(--shadow-md) !important;
+      margin-bottom: 2rem !important;
+      overflow: hidden;
+    }
+
+    /* === BOUTONS MODERNES === */
+    .addlink, .button, input[type="submit"], .submit-row input {
+      background: var(--royal-blue-gradient) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: var(--border-radius) !important;
+      padding: 0.75rem 1.5rem !important;
+      font-weight: 600 !important;
+      font-size: 0.875rem !important;
+      text-decoration: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+      transition: var(--transition) !important;
+      cursor: pointer !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    .addlink:hover, .button:hover, input[type="submit"]:hover, .submit-row input:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: var(--shadow-lg) !important;
+      filter: brightness(1.1) !important;
+    }
+
+    .addlink:active, .button:active, input[type="submit"]:active {
+      transform: translateY(0) !important;
+    }
+
+    /* Boutons de succès */
+    .default, input[name="_save"] {
+      background: linear-gradient(135deg, var(--success) 0%, #059669 100%) !important;
+    }
+
+    /* Boutons de danger */
+    .deletelink, input[name="_delete"] {
+      background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%) !important;
+    }
+
+    /* === TABLEAUX MODERNES === */
+    .change-list table, .results table {
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+      border-radius: var(--border-radius) !important;
+      overflow: hidden !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    .change-list th, .results th {
+      background: var(--royal-blue-gradient) !important;
+      color: white !important;
+      font-weight: 600 !important;
+      padding: 1rem !important;
+      text-align: left !important;
+      border: none !important;
+      font-size: 0.875rem !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.025em !important;
+    }
+
+    .change-list .row1, .change-list .row2 {
+      border: none !important;
+      transition: var(--transition) !important;
+    }
+
+    .change-list .row1 {
+      background: var(--surface-primary) !important;
+    }
+
+    .change-list .row2 {
+      background: var(--surface-secondary) !important;
+    }
+
+    .change-list .row1:hover, .change-list .row2:hover {
+      background: #eff6ff !important;
+      transform: translateX(4px) !important;
+      box-shadow: var(--shadow-md) !important;
+    }
+
+    .change-list td {
+      padding: 1rem !important;
+      border-bottom: 1px solid var(--surface-tertiary) !important;
+      transition: var(--transition) !important;
+    }
+
+    /* === FORMULAIRES === */
+    .form-row {
+      margin-bottom: 1.5rem !important;
+      background: var(--surface-secondary) !important;
+      padding: 1.5rem !important;
+      border-radius: var(--border-radius) !important;
+      border: 1px solid var(--surface-tertiary) !important;
+    }
+
+    .form-row label {
+      font-weight: 600 !important;
+      color: var(--text-primary) !important;
+      margin-bottom: 0.5rem !important;
+      display: block !important;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"], 
+    input[type="number"], textarea, select {
+      border: 2px solid var(--surface-tertiary) !important;
+      border-radius: var(--border-radius) !important;
+      padding: 0.75rem !important;
+      font-size: 1rem !important;
+      transition: var(--transition) !important;
+      width: 100% !important;
+      background: var(--surface-primary) !important;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus, 
+    input[type="password"]:focus, input[type="number"]:focus, 
+    textarea:focus, select:focus {
+      border-color: var(--royal-blue-light) !important;
+      box-shadow: 0 0 0 3px rgba(43, 122, 248, 0.96) !important;
+      outline: none !important;
+    }
+
+    /* === MESSAGES === */
+    .messagelist {
+      margin: 0 0 2rem 0 !important;
+      padding: 0 !important;
+    }
+
+    .messagelist li {
+      background: var(--surface-primary) !important;
+      border-left: 4px solid var(--success) !important;
+      border-radius: var(--border-radius) !important;
+      padding: 1rem 1.5rem !important;
+      margin-bottom: 0.5rem !important;
+      box-shadow: var(--shadow-sm) !important;
+      list-style: none !important;
+    }
+
+    .messagelist .error {
+      border-left-color: var(--danger) !important;
+      background: #fef2f2 !important;
+    }
+
+    .messagelist .warning {
+      border-left-color: var(--warning) !important;
+      background: #fffbeb !important;
+    }
+
+    /* === NAVIGATION === */
+    .breadcrumbs {
+      background: var(--surface-primary) !important;
+      border: 1px solid var(--surface-tertiary) !important;
+      border-radius: var(--border-radius) !important;
+      padding: 1rem 1.5rem !important;
+      margin-bottom: 2rem !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    .breadcrumbs a {
+      color: var(--royal-blue-light) !important;
+      text-decoration: none !important;
+      font-weight: 500 !important;
+      transition: var(--transition) !important;
+    }
+
+    .breadcrumbs a:hover {
+      color: var(--royal-blue-dark) !important;
+    }
+
+    /* === PAGINATION === */
+    .paginator {
+      background: var(--surface-primary) !important;
+      border-radius: var(--border-radius) !important;
+      padding: 1rem !important;
+      margin: 2rem 0 !important;
+      box-shadow: var(--shadow-sm) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.5rem !important;
+    }
+
+    .paginator a, .paginator .this-page {
+      padding: 0.5rem 0.75rem !important;
+      border-radius: 4px !important;
+      text-decoration: none !important;
+      transition: var(--transition) !important;
+    }
+
+    .paginator a {
+      color: var(--royal-blue-light) !important;
+    }
+
+    .paginator a:hover {
+      background: var(--surface-secondary) !important;
+    }
+
+    .paginator .this-page {
+      background: var(--royal-blue-gradient) !important;
+      color: white !important;
+      font-weight: 600 !important;
+    }
+
+    /* === RESPONSIVITÉ === */
+    @media (max-width: 768px) {
+      #container {
+        padding: 1rem !important;
+      }
+      
+      #site-name a {
+        font-size: 1.25rem !important;
+      }
+      
+      .admin-subtitle {
+        display: none;
+      }
+      
+      #user-tools {
+        margin: 0.5rem !important;
+      }
+    }
+
+    /* === ANIMATIONS === */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .module {
+      animation: slideIn 0.3s ease-out !important;
+    }
+
+    /* === SCROLLBAR PERSONNALISÉE === */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--surface-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--royal-blue-light);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--royal-blue-dark);
+    }
+  </style>
+{% endblock %}
